@@ -1,0 +1,1 @@
+ant && java -classpath `ruby -e "puts ARGV.join(':')" lib/*.jar`:build/classes jline.ConsoleRunner jsfun.utils.Shell jsfun.examples.$1
