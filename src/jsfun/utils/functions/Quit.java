@@ -10,4 +10,9 @@ public class Quit extends BaseFunction {
 		System.exit(0);
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return "[System.exit(0]";
+	}
 }

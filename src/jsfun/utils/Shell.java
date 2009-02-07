@@ -5,8 +5,13 @@ import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.File;
 
-@SuppressWarnings({"unchecked"})
+import jline.ConsoleReader;
+import jline.ConsoleReaderInputStream;
+import jline.History;
+
 public class Shell implements SignalHandler {
 	private JSEnvironment env;
 	private Context cx;
@@ -15,8 +20,19 @@ public class Shell implements SignalHandler {
 	private StringBuilder input;
 	private int line;
 	private String prompt;
+	private Object result;
+	private ConsoleReader reader;
 
 	public Shell(final JSEnvironment env) {
+
+		try {
+			this.reader = new ConsoleReader();
+			this.reader.setHistory(new History(new File
+                (System.getProperty("user.home"),
+                    ".jsfun.history")));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		this.env = env;
 		this.line = 1;
 		this.buffer = new byte[2048];
@@ -34,9 +50,12 @@ public class Shell implements SignalHandler {
 		if (quitOnInterrupt()) {
 			System.exit(0);
 		} else {
-			this.input.setLength(0);
-			System.out.println();
-			prompt();
+			try {
+				this.reader.setCursorPosition(0);
+				this.reader.killLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -46,8 +65,8 @@ public class Shell implements SignalHandler {
 			Shell shell = new Shell(env);
 			Runtime.getRuntime().addShutdownHook(new Thread(new NewlineShutdownHook()));
 			Signal.handle(new Signal("INT"), shell);
-			int exitValue = shell.repl();
-			System.exit(exitValue);
+			ConsoleReaderInputStream.setIn(shell.reader);
+			shell.repl();
 		}
 		throw new RuntimeException("Must Specify a javascript environment");
 	}
@@ -56,13 +75,12 @@ public class Shell implements SignalHandler {
 		return (Integer) new ContextFactory().call(new ContextAction() {
 			public Object run(Context cx) {
 				Shell.this.cx = cx;
-
 				Shell.this.scope = env.createScope(cx);
 				for (;;) {
-						if (read()) {
-							execute();
-							print();
-						}
+					if (read()) {
+						execute();
+						print();
+					}
 				}
 			}
 		});
@@ -70,9 +88,8 @@ public class Shell implements SignalHandler {
 
 	private boolean read() {
 		try {
-			prompt();
-			int read = System.in.read(buffer);
-			this.input.append(new String(buffer, 0, read));
+			String line = this.reader.readLine(this.prompt + " ");
+			this.input.append(line);
 			if (cx.stringIsCompilableUnit(this.input.toString())) {
 				return true;
 			}
@@ -82,17 +99,10 @@ public class Shell implements SignalHandler {
 		return false;
 	}
 
-	private void prompt() {
-		System.out.print(this.prompt + " ");
-	}
-
 	private void execute() {
+		result = Undefined.instance;
 		try {
-			Object result = cx.evaluateString(this.scope, this.input.toString(), "shell", this.line++, null);
-			if (result instanceof Undefined) {
-			} else {
-				System.out.println(result);
-			}
+			result = cx.evaluateString(this.scope, this.input.toString(), "shell", this.line++, null);
 		} catch (EcmaError e) {
 			System.err.println(e.details());
 		} catch (EvaluatorException e) {
@@ -105,17 +115,39 @@ public class Shell implements SignalHandler {
 	}
 
 	private void print() {
-
+		if (result == null) {
+			System.out.println("null");
+		} else if (result instanceof Undefined) {
+			//print nothing
+		} else if (result instanceof Scriptable) {
+			Scriptable scriptable = (Scriptable) result;
+			Object toString;
+			try {
+				toString = ScriptableObject.getProperty(scriptable, "toString");
+			} catch (Exception e) {
+				System.out.println(scriptable.toString());
+				return;
+			}
+			if (toString instanceof Function) {
+				Function callableToString = (Function) toString;
+				System.out.println(callableToString.call(cx, scope, scriptable, new Object[0]));
+			} else {
+				System.out.println(result.toString());
+			}
+		} else {
+			System.out.println(result.toString());
+		}
 	}
 
 	private boolean quitOnInterrupt() {
 		return env == null || env.getClass().isAnnotationPresent(QuitOnInterrupt.class);
 	}
 
+	@SuppressWarnings({"unchecked"})
 	private static JSEnvironment loadEnv(String name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 		Class<? extends JSEnvironment> envs = (Class<? extends JSEnvironment>) Class.forName(name);
 		JSEnvironment env = envs.newInstance();
-		System.out.println("The Cogent Dude on Javascript 0.1\n");
+		System.out.println("Cogent Dude on Javascript 0.1\n");
 		System.out.println("Environment:\t" + envs.getSimpleName());
 		if (envs.isAnnotationPresent(EnvDescription.class)) {
 			System.out.println("\n" + envs.getAnnotation(EnvDescription.class).value());

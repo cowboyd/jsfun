@@ -20,7 +20,6 @@ public class NothingLebowskiNothing extends ScriptableObject implements JSEnviro
 		return this;
 	}
 
-
 	@Override
 	public String getClassName() {
 		return "Nothing";
