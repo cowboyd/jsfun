@@ -1,10 +1,11 @@
 package jsfun.examples;
 
-import jsfun.utils.JSEnvironment;
 import jsfun.utils.EnvDescription;
+import jsfun.utils.JSEnvironment;
 import jsfun.utils.Prompt;
-import org.mozilla.javascript.Scriptable;
+import jsfun.utils.QuitOnInterrupt;
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 
@@ -13,19 +14,20 @@ import org.mozilla.javascript.ScriptableObject;
 		"here is the toString() function. Otherwise, we would not even be equipped with our flashlight to explore this\n" +
 		"dank environment. There is no Object, no Date, no Math. We believe in Nothing Lebowski, nothing!")
 @Prompt("nossing>")
-public class NothingLebowskiNothing implements JSEnvironment {
+@QuitOnInterrupt
+public class NothingLebowskiNothing extends ScriptableObject implements JSEnvironment {
 	public Scriptable createScope(Context cx) {
-		ScriptableObject scope = new ScriptableObject() {
-			@Override
-			public String getClassName() {
-				return "QuiteBare";
-			}
+		return this;
+	}
 
-			@Override
-			public String toString() {
-				return "[We Believe in Nossing]";
-			}
-		};
-		return scope;
+
+	@Override
+	public String getClassName() {
+		return "Nothing";
+	}
+
+	@Override
+	public String toString() {
+		return "[We Believe In Nossing]";
 	}
 }

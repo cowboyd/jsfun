@@ -21,6 +21,6 @@
 	</target>
 
 	<target name="compile" depends="init">
-		<javac classpath="${rhino.jar}:${beanutils.jar}" srcdir="${src.dir}" destdir="${class.dir}"/>
+		<javac classpath="${rhino.jar}:${beanutils.jar}:${jline.jar}" srcdir="${src.dir}" destdir="${class.dir}" debug="true" debuglevel="lines,vars,source"/>
 	</target>
 </project>

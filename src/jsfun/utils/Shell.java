@@ -1,11 +1,13 @@
 package jsfun.utils;
 
 import org.mozilla.javascript.*;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 import java.io.IOException;
 
 @SuppressWarnings({"unchecked"})
-public class Shell {
+public class Shell implements SignalHandler {
 	private JSEnvironment env;
 	private Context cx;
 	private byte[] buffer;
@@ -26,10 +28,24 @@ public class Shell {
 		}
 	}
 
+
+	@Override
+	public void handle(Signal signal) {
+		if (quitOnInterrupt()) {
+			System.exit(0);
+		} else {
+			this.input.setLength(0);
+			System.out.println();
+			prompt();
+		}
+	}
+
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		if (args.length > 0) {
 			JSEnvironment env = loadEnv(args[0]);
 			Shell shell = new Shell(env);
+			Runtime.getRuntime().addShutdownHook(new Thread(new NewlineShutdownHook()));
+			Signal.handle(new Signal("INT"), shell);
 			int exitValue = shell.repl();
 			System.exit(exitValue);
 		}
@@ -37,24 +53,24 @@ public class Shell {
 	}
 
 	private int repl() {
-		new ContextFactory().call(new ContextAction() {
+		return (Integer) new ContextFactory().call(new ContextAction() {
 			public Object run(Context cx) {
 				Shell.this.cx = cx;
+
 				Shell.this.scope = env.createScope(cx);
 				for (;;) {
-					if (read()) {
-						execute();
-						print();
-					}
+						if (read()) {
+							execute();
+							print();
+						}
 				}
 			}
 		});
-		return 0;
 	}
 
 	private boolean read() {
 		try {
-			System.out.print(this.prompt + " ");
+			prompt();
 			int read = System.in.read(buffer);
 			this.input.append(new String(buffer, 0, read));
 			if (cx.stringIsCompilableUnit(this.input.toString())) {
@@ -64,6 +80,10 @@ public class Shell {
 			throw new RuntimeException(e);
 		}
 		return false;
+	}
+
+	private void prompt() {
+		System.out.print(this.prompt + " ");
 	}
 
 	private void execute() {
@@ -88,6 +108,10 @@ public class Shell {
 
 	}
 
+	private boolean quitOnInterrupt() {
+		return env == null || env.getClass().isAnnotationPresent(QuitOnInterrupt.class);
+	}
+
 	private static JSEnvironment loadEnv(String name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 		Class<? extends JSEnvironment> envs = (Class<? extends JSEnvironment>) Class.forName(name);
 		JSEnvironment env = envs.newInstance();
@@ -98,5 +122,12 @@ public class Shell {
 		}
 		System.out.println();
 		return env;
+	}
+
+	private static class NewlineShutdownHook implements Runnable {
+		@Override
+		public void run() {
+			System.out.println();
+		}
 	}
 }
