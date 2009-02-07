@@ -5,12 +5,12 @@ import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.File;
 
 import jline.ConsoleReader;
 import jline.ConsoleReaderInputStream;
 import jline.History;
+import jsfun.utils.functions.Quit;
 
 public class Shell implements SignalHandler {
 	private JSEnvironment env;
@@ -19,9 +19,10 @@ public class Shell implements SignalHandler {
 	private Scriptable scope;
 	private StringBuilder input;
 	private int line;
-	private String prompt;
+	private String noInputPrompt;
 	private Object result;
 	private ConsoleReader reader;
+	private String prompt;
 
 	public Shell(final JSEnvironment env) {
 
@@ -38,10 +39,11 @@ public class Shell implements SignalHandler {
 		this.buffer = new byte[2048];
 		this.input = new StringBuilder();
 		if (env.getClass().isAnnotationPresent(Prompt.class)) {
-			this.prompt = env.getClass().getAnnotation(Prompt.class).value();
+			this.noInputPrompt = env.getClass().getAnnotation(Prompt.class).value();
 		} else {
-			this.prompt = env.getClass().getSimpleName() + ">";
+			this.noInputPrompt = env.getClass().getSimpleName() + ">";
 		}
+		this.prompt = this.noInputPrompt;
 	}
 
 
@@ -75,7 +77,12 @@ public class Shell implements SignalHandler {
 		return (Integer) new ContextFactory().call(new ContextAction() {
 			public Object run(Context cx) {
 				Shell.this.cx = cx;
-				Shell.this.scope = env.createScope(cx);
+				Scriptable scope = Shell.this.scope = env.createScope(cx);
+				if (!quitOnInterrupt()) {
+					Quit quit = new Quit();
+					ScriptableObject.putProperty(scope, "quit", quit);
+					ScriptableObject.putProperty(scope, "exit", quit);
+				}
 				for (;;) {
 					if (read()) {
 						execute();
@@ -91,12 +98,15 @@ public class Shell implements SignalHandler {
 			String line = this.reader.readLine(this.prompt + " ");
 			this.input.append(line);
 			if (cx.stringIsCompilableUnit(this.input.toString())) {
+				this.prompt = this.noInputPrompt;
 				return true;
+			} else {
+				this.prompt = "*";
+				return false;
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		return false;
 	}
 
 	private void execute() {
