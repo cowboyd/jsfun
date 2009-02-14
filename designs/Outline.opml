@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+  <head>
+    <title>Outline</title>
+    <expansionState>0,16,19,22,23,24,28,31,36,39,41,46,52</expansionState>
+  </head>
+  <body>
+    <outline text="Embedding with Javascript: An spring evening wasted with Charles Lowell.">
+      <outline text="Who (tf) am I?">
+        <outline text="Charles Lowell - President, The Frontside Software, Inc"/>
+        <outline text="AIM/YM! - c0wb0yd"/>
+        <outline text="twitter - @cowboyd (all I do is complain!)"/>
+        <outline text="podcast: drunk and retired"/>
+        <outline text="poken: cowboyd"/>
+        <outline text="www.thefrontside.net—blog &lt;http://www.thefrontside.net/blog&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt;"/>
+        <outline text="www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt;"/>
+        <outline text="Why should you listen to me?"/>
+      </outline>
+      <outline text="What is embedding?">
+        <outline text="placing one universe(runtime) inside another."/>
+        <outline text="the programmers job is to build the sub universe">
+          <outline text="it needs mass  (API)"/>
+          <outline text="also needs physics (language runtime and semantics)"/>
+          <outline text="for java, a VM inside the VM"/>
+        </outline>
+        <outline text="example: DHTML">
+          <outline text="most famous. Javascript != DOM"/>
+          <outline text="Window, Location, Navigator, Element..... mostly written in some flavor of C/C++"/>
+        </outline>
+        <outline text="example: Velocity Templates">
+          <outline text="velocity context is host environment"/>
+          <outline text="templates operate in their own universe."/>
+        </outline>
+      </outline>
+      <outline text="Why embed at all?">
+        <outline text="Extending an existing system at runtime (mashing up)">
+          <outline text="present a clean face on an api that might be large and complex">
+            <outline text="give them just what they need, nothing more. (synergy w/ security) KEY"/>
+            <outline text="api is small, more easily comprehensible."/>
+            <outline text="leverage existing use of a language"/>
+            <outline text="allow modern language features">
+              <outline text="first class functions (closures)"/>
+              <outline text="dynamic typing"/>
+            </outline>
+          </outline>
+          <outline text="Low Barrier to entry">
+            <outline text="depends on your environment, but most add the following values"/>
+            <outline text="toolchain optional"/>
+            <outline text="no compiler"/>
+            <outline text="no external dependencies"/>
+          </outline>
+        </outline>
+        <outline text="Security">
+          <outline text="sandboxing, you create the universe"/>
+          <outline text="only show those things necessary, nothing more. (cooperating concern with api KEY)"/>
+          <outline text="since you create the universe, imagine a world without guns">
+            <outline text="Typical Java Security: put the guns in a sealed glass case with alarms, and booby traps"/>
+            <outline text="Embedded Security: No such thing as gun">
+              <outline text="no such concept as System.exit()"/>
+              <outline text="no such concept thing as File.delete()"/>
+              <outline text="&quot;The purpose of Newspeak was not only to provide a medium of expression for the world-view and mental habits proper to the devotees of Ingsoc, but to make all other modes of thought impossible.&quot; George Orwell, 1984, Appendix, pg. 303"/>
+            </outline>
+          </outline>
+          <outline text="conclusion: embedding good possibility for running untrusted code."/>
+        </outline>
+        <outline text="Most arguments for JVM apply also to embedding.">
+          <outline text="platform independent"/>
+          <outline text="unified api"/>
+          <outline text="security"/>
+          <outline text="system managed allocation of resources"/>
+        </outline>
+        <outline text="Conclusion: Youre the man now dog!"/>
+      </outline>
+      <outline text="So why is Javascript a good choice for embedding?">
+        <outline text="www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt;—index4.htm www.realultimatepower.net—index4.htm &lt;http://www.realultimatepower.net/index4.htm&gt;"/>
+        <outline text="Runtime supports most modern features"/>
+        <outline text="fast, lean"/>
+        <outline text="works by injection rather than filtration"/>
+        <outline/>
+        <outline text="Lots of people know javascript">
+          <outline text="ruby people know javascript"/>
+          <outline text="groovy people know javascript"/>
+          <outline text="php people know javascript"/>
+          <outline text="chances are that "/>
+        </outline>
+      </outline>
+      <outline/>
+    </outline>
+  </body>
+</opml>
