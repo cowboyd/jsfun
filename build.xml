@@ -1,0 +1,26 @@
+<project name="Cogent Dude Javascript" basedir="." default="compile">
+
+
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="class.dir" value="${build.dir}/classes"/>
+
+	<property name="rhino.jar" value="${lib.dir}/rhino-1.7R1.jar"/>
+	<property name="beanutils.jar" value="${lib.dir}/commons-beanutils-core.jar"/>
+	<property name="jline.jar" value="${lib.dir}/jline-0.9.94.jar"/>
+
+
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${class.dir}"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac classpath="${rhino.jar}:${beanutils.jar}:${jline.jar}" srcdir="${src.dir}" destdir="${class.dir}" debug="true" debuglevel="lines,vars,source"/>
+	</target>
+</project>
