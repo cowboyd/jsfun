@@ -11,6 +11,7 @@ import jline.ConsoleReader;
 import jline.ConsoleReaderInputStream;
 import jline.History;
 import jsfun.utils.functions.Quit;
+import jsfun.utils.functions.SetPrototype;
 
 public class Shell implements SignalHandler {
 	private JSEnvironment env;
@@ -78,6 +79,7 @@ public class Shell implements SignalHandler {
 			public Object run(Context cx) {
 				Shell.this.cx = cx;
 				Scriptable scope = Shell.this.scope = env.createScope(cx);
+				ScriptableObject.putProperty(scope, "$proto", new SetPrototype());
 				if (!quitOnInterrupt()) {
 					Quit quit = new Quit();
 					ScriptableObject.putProperty(scope, "quit", quit);

@@ -13,6 +13,6 @@ public class Quit extends BaseFunction {
 
 	@Override
 	public String toString() {
-		return "[System.exit(0]";
+		return "function() {\t[Native Call: System.exit(0)]}";
 	}
 }
