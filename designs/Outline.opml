@@ -2,7 +2,7 @@
 <opml version="1.0">
   <head>
     <title>Outline</title>
-    <expansionState>0,16,19,23,24,28,31,36,39,41,45,48,57,59,68,69,73,74,76,78,84,87,88,89,92,95,98,104,110,114,117</expansionState>
+    <expansionState>0,16,19,23,24,28,31,36,39,41,45,48,57,59,68,69,73,74,76,79,81,87,90,91,92,95,98,101,108,111,114,118,122,123,126,130,131,134,138,140,143,147</expansionState>
   </head>
   <body>
     <outline text="Embedding with Javascript: An spring evening wasted with Charles Lowell.">
@@ -101,6 +101,10 @@
         <outline text="The Scriptable interface">
           <outline text="contains all the operations necessary for a object to appear in the javascript universe">
             <outline text="code pic: scriptable interface"/>
+            <outline text="ECMA 262-2 8.6.1">
+              <outline text="defines the &quot;native&quot; interface for embedders"/>
+              <outline text="scriptable interface is an instance of this."/>
+            </outline>
           </outline>
           <outline text="Probably the most important operations that we're all familiar with are get/put/delete">
             <outline text="It's because of these operations that every javascript object is a hash"/>
@@ -137,6 +141,7 @@
               <outline text="concealed puppet master: pic puppect master"/>
               <outline text="get/put are not actually called on the object, they are called on that object's prototype"/>
               <outline text="the actual object is passed to the prototype as the start parameter"/>
+              <outline text="object's own get/put methods are "/>
               <outline text="In other words, the prototype negotiates all object references, dereferences">
                 <outline text="since &quot;methods&quot; are just references to functions, prototypes completely control method dispatch."/>
                 <outline text="shell example: Swords -&gt; Plows"/>
@@ -150,14 +155,51 @@
                 <outline text="code example: setPrototype() getPrototype()"/>
                 <outline text="shell example: change prototype from Swords -&gt; Plowshares"/>
               </outline>
+              <outline text="from the embedder's perspective, prototype is a bit of a misnomer">
+                <outline text="from the standard host environment, prototype is a appropriate"/>
+                <outline text="for the embedder, it doesn't quite capture it."/>
+                <outline text="conceptually, &quot;object controller&quot; is more in line with what it does"/>
+              </outline>
+            </outline>
+            <outline text="Summary">
+              <outline text="javascript object model is about as simple as it gets:">
+                <outline text="a directed graph of objects"/>
+                <outline text="each node has a &quot;controller&quot; (prototype) which arbitrates over the edges in the graph."/>
+              </outline>
+              <outline text="this simplicity lends flexibility">
+                <outline text="power to control every aspect of the runtime"/>
+                <outline text="can be used to host the most heinous object/class models imagineable"/>
+                <outline text="Pic: CLOS oh what tangled webs we weave."/>
+              </outline>
             </outline>
           </outline>
-          <outline text="Example: Embedding a java object from scratch">
-            <outline text="Of course there are ways to do this out of the box, but we're going to do it ourselves"/>
-            <outline/>
-            <outline text="things that come rolled with rhino that we didn't implement">
-              <outline text="best fit method selection"/>
-              <outline/>
+          <outline text="Example: Annotating Java Objects at Runtime">
+            <outline text="There is a standard way to do this in rhino">
+              <outline text="like all JVM scripting languages, instantiating and utilizing java objects is a breeze"/>
+              <outline text="shell sample: standard java embedding">
+                <outline text="key features:">
+                  <outline text="bean-style property access"/>
+                  <outline text="&quot;best fit&quot; method matching"/>
+                  <outline text="auto-translation of objects from java to their js equivalents and vice versa "/>
+                </outline>
+                <outline text="drawbacks">
+                  <outline text="can't set arbitrary properties on java objects like you can with javascript"/>
+                  <outline text="can't change the methods available to an entire class of objects">
+                    <outline text="similar to &quot;opening&quot; a class at runtime in ruby, groovy"/>
+                  </outline>
+                  <outline text="gives you what you need, no more."/>
+                </outline>
+              </outline>
+            </outline>
+            <outline text="So we roll our own, it's easy enough, about 10 lines of (interesting) code">
+              <outline text="Strategy: direct the method lookup through a prototype"/>
+              <outline text="attach the prototype to every java object that gets projected into the runtime"/>
+              <outline text="code clip: attaching the mind leech, implementing get/put"/>
+              <outline text="shell example: using the expando java object">
+                <outline text="put get arbitrary properties"/>
+                <outline text="put/get a method "/>
+                <outline text="exercise for the user: delete, replace existing java methods!"/>
+              </outline>
             </outline>
           </outline>
         </outline>
