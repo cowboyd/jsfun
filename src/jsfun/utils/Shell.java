@@ -130,6 +130,10 @@ public class Shell implements SignalHandler {
 			System.out.println("null");
 		} else if (result instanceof Undefined) {
 			//print nothing
+		} else if (result instanceof Wrapper) {
+			Wrapper wrapper = (Wrapper) result;
+			Object result = wrapper.unwrap();
+			System.out.println("[" + result + "]");
 		} else if (result instanceof Scriptable) {
 			Scriptable scriptable = (Scriptable) result;
 			Object toString;
