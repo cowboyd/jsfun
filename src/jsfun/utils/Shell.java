@@ -11,12 +11,11 @@ import jline.ConsoleReader;
 import jline.ConsoleReaderInputStream;
 import jline.History;
 import jsfun.utils.functions.Quit;
-import jsfun.utils.functions.SetPrototype;
+import jsfun.utils.functions.GetOrSetPrototype;
 
 public class Shell implements SignalHandler {
 	private JSEnvironment env;
 	private Context cx;
-	private byte[] buffer;
 	private Scriptable scope;
 	private StringBuilder input;
 	private int line;
@@ -37,7 +36,6 @@ public class Shell implements SignalHandler {
 		}
 		this.env = env;
 		this.line = 1;
-		this.buffer = new byte[2048];
 		this.input = new StringBuilder();
 		if (env.getClass().isAnnotationPresent(Prompt.class)) {
 			this.noInputPrompt = env.getClass().getAnnotation(Prompt.class).value();
@@ -79,12 +77,13 @@ public class Shell implements SignalHandler {
 			public Object run(Context cx) {
 				Shell.this.cx = cx;
 				Scriptable scope = Shell.this.scope = env.createScope(cx);
-				ScriptableObject.putProperty(scope, "$proto", new SetPrototype());
+				ScriptableObject.putProperty(scope, "$proto", new GetOrSetPrototype());
 				if (!quitOnInterrupt()) {
 					Quit quit = new Quit();
 					ScriptableObject.putProperty(scope, "quit", quit);
 					ScriptableObject.putProperty(scope, "exit", quit);
 				}
+				//noinspection InfiniteLoopStatement
 				for (;;) {
 					if (read()) {
 						execute();

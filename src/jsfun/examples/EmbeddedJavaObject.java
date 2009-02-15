@@ -1,10 +1,12 @@
-package jsfun;
+package jsfun.examples;
 
 import jsfun.utils.BeanUtilsUtils;
+import jsfun.utils.JSEnvironment;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.Context;
 
 
-public class EmbeddedJavaObject implements Scriptable {
+public class EmbeddedJavaObject implements Scriptable, JSEnvironment {
 	private Object javaInstance;
 
 
@@ -69,5 +71,10 @@ public class EmbeddedJavaObject implements Scriptable {
 
 	public boolean hasInstance(Scriptable instance) {
 		return false;
+	}
+
+	@Override
+	public Scriptable createScope(Context cx) {
+		return cx.initStandardObjects();
 	}
 }

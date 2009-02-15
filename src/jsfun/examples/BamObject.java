@@ -39,12 +39,12 @@ public class BamObject implements Scriptable, JSEnvironment {
 
 	@Override
 	public boolean has(String name, Scriptable start) {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean has(int index, Scriptable start) {
-		return true;
+		return false;
 	}
 
 	@Override

@@ -2,7 +2,7 @@
 <opml version="1.0">
   <head>
     <title>Outline</title>
-    <expansionState>0,16,19,22,23,24,28,31,36,39,41,46,52</expansionState>
+    <expansionState>0,16,19,23,24,28,31,36,39,41,45,48,57,59,68,69,73,74,76,78,84,87,88,89,92,95,98,104,110,114,117</expansionState>
   </head>
   <body>
     <outline text="Embedding with Javascript: An spring evening wasted with Charles Lowell.">
@@ -12,8 +12,8 @@
         <outline text="twitter - @cowboyd (all I do is complain!)"/>
         <outline text="podcast: drunk and retired"/>
         <outline text="poken: cowboyd"/>
-        <outline text="www.thefrontside.net—blog &lt;http://www.thefrontside.net/blog&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt;"/>
-        <outline text="www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt;"/>
+        <outline text="www.thefrontside.net &lt;http://www.thefrontside.net/&gt;—blog www.thefrontside.net—blog &lt;http://www.thefrontside.net/blog&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt;"/>
+        <outline text="www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt;"/>
         <outline text="Why should you listen to me?"/>
       </outline>
       <outline text="What is embedding?">
@@ -60,6 +60,9 @@
               <outline text="no such concept thing as File.delete()"/>
               <outline text="&quot;The purpose of Newspeak was not only to provide a medium of expression for the world-view and mental habits proper to the devotees of Ingsoc, but to make all other modes of thought impossible.&quot; George Orwell, 1984, Appendix, pg. 303"/>
             </outline>
+            <outline text="shell example: nothing lebowski">
+              <outline text="the empty universe"/>
+            </outline>
           </outline>
           <outline text="conclusion: embedding good possibility for running untrusted code."/>
         </outline>
@@ -72,11 +75,16 @@
         <outline text="Conclusion: Youre the man now dog!"/>
       </outline>
       <outline text="So why is Javascript a good choice for embedding?">
-        <outline text="www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt;—index4.htm www.realultimatepower.net—index4.htm &lt;http://www.realultimatepower.net/index4.htm&gt;"/>
-        <outline text="Runtime supports most modern features"/>
-        <outline text="fast, lean"/>
-        <outline text="works by injection rather than filtration"/>
-        <outline/>
+        <outline text="www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt; "/>
+        <outline text="Runtime supports most modern language features"/>
+        <outline text="Almost all programming models, can be mapped to it, because it's so dead simple">
+          <outline text="pics: the different meta-models."/>
+        </outline>
+        <outline text="works by injection rather than filtration (design vs whittle)">
+          <outline text="pic: whittled tools"/>
+          <outline text="pic: actual screw driver"/>
+          <outline text="backref: security, empty universe"/>
+        </outline>
         <outline text="Lots of people know javascript">
           <outline text="ruby people know javascript"/>
           <outline text="groovy people know javascript"/>
@@ -84,7 +92,76 @@
           <outline text="chances are that "/>
         </outline>
       </outline>
-      <outline/>
+      <outline text="Whether it's a good idea or not, here's how it's done">
+        <outline text="taking a different approach.">
+          <outline text="this is not the standard stuff that you can find on the website"/>
+          <outline text="you can get alot of mileage out of the basic stuff there (kept me going for years)"/>
+          <outline text="This is the stuff that I wish someone would have explained to me when I first started 3 years ago"/>
+        </outline>
+        <outline text="The Scriptable interface">
+          <outline text="contains all the operations necessary for a object to appear in the javascript universe">
+            <outline text="code pic: scriptable interface"/>
+          </outline>
+          <outline text="Probably the most important operations that we're all familiar with are get/put/delete">
+            <outline text="It's because of these operations that every javascript object is a hash"/>
+            <outline text="code pic: get/put/delete">
+              <outline text="note that there are two forms of each String/Integer"/>
+              <outline text="so really, not only is every object in javascript a hash, it's also an array"/>
+              <outline text="get(String), get(int) corresponds to object.foo, object[i] respectively"/>
+              <outline text="put(String, Object), put(int, Object) corresponds to object.foo = x, object[i] = x respectively"/>
+              <outline text="delete(String), delete(int) correspond to delete object.foo, delete object[i] respectively"/>
+              <outline text="check out that start variable... what is that? we'll come back to that later">
+                <outline text="it took me 2 years to figure out what the heck that thing was."/>
+              </outline>
+            </outline>
+            <outline text="shell example: loud get/put"/>
+          </outline>
+        </outline>
+        <outline text="But that's not the whole story. That's cool, but that's not what gives us the real ultimate power.">
+          <outline text="THE PROTOTYPE">
+            <outline text="Overview">
+              <outline text="every object has a direct reference to a single prototype (can be null)"/>
+              <outline text="controls every aspect of how an object behaves, what it looks like"/>
+              <outline text="can't necessarily get a reference to it, unless explicity exposed by the environment">
+                <outline text="shell example: BamObject."/>
+                <outline text="shell example: BamObject as a prototype"/>
+              </outline>
+            </outline>
+            <outline text="How it works.">
+              <outline text="this is a big deal, here, this is what like, didn't dawn on me for years of using rhino."/>
+              <outline text="If you &quot;know&quot; how prototypes work already, You need to unlearn even that."/>
+              <outline text="Every object, not every Constructor, class, whatever, has a reference to a prototype">
+                <outline text="every single object. They can share prototypes, and there are conventions for doing so, but it is not necessary."/>
+                <outline text="cod pic: getPrototype()/setPrototype()"/>
+              </outline>
+              <outline text="concealed puppet master: pic puppect master"/>
+              <outline text="get/put are not actually called on the object, they are called on that object's prototype"/>
+              <outline text="the actual object is passed to the prototype as the start parameter"/>
+              <outline text="In other words, the prototype negotiates all object references, dereferences">
+                <outline text="since &quot;methods&quot; are just references to functions, prototypes completely control method dispatch."/>
+                <outline text="shell example: Swords -&gt; Plows"/>
+              </outline>
+            </outline>
+            <outline text="In the wild">
+              <outline text="default way for determining an object's prototype is that is the &quot;prototype&quot; property of the function that constructed the object"/>
+              <outline text="Don't let this confuse you."/>
+              <outline text="that is just the default... embedders can change that!">
+                <outline text="every object instance has a reference to its prototype"/>
+                <outline text="code example: setPrototype() getPrototype()"/>
+                <outline text="shell example: change prototype from Swords -&gt; Plowshares"/>
+              </outline>
+            </outline>
+          </outline>
+          <outline text="Example: Embedding a java object from scratch">
+            <outline text="Of course there are ways to do this out of the box, but we're going to do it ourselves"/>
+            <outline/>
+            <outline text="things that come rolled with rhino that we didn't implement">
+              <outline text="best fit method selection"/>
+              <outline/>
+            </outline>
+          </outline>
+        </outline>
+      </outline>
     </outline>
   </body>
 </opml>
