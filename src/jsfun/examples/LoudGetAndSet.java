@@ -18,8 +18,8 @@ import java.util.HashMap;
 )
 public class LoudGetAndSet implements Scriptable, JSEnvironment {
 
-	HashMap<Object, Object> properties = new HashMap<Object, Object>();
 	public static final String INITIAL_JS = "var loud = new LoudGetAndSet()";
+	HashMap<Object, Object> properties = new HashMap<Object, Object>();
 
 	@Override
 	public String getClassName() {

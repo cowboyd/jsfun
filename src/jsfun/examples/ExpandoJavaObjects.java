@@ -8,7 +8,7 @@ import org.mozilla.javascript.WrapFactory;
 
 import java.util.HashMap;
 
-public class ExpandoJavaObjects implements Scriptable, JSEnvironment {
+ public class ExpandoJavaObjects implements Scriptable {
 
 
 	private HashMap<Object, Object> properties = new HashMap<Object, Object>();
@@ -104,29 +104,25 @@ public class ExpandoJavaObjects implements Scriptable, JSEnvironment {
 	}
 
 	@Override
-	public Scriptable createScope(Context cx) {
-		cx.setWrapFactory(new WrapFactory() {
-			@Override
+	public String toString() {
+		return String.format("[object %s]", this.getClass().getSimpleName());
+	}
+
+	@Override
+	public Scriptable createScope(Context context) {
+		
+		context.setWrapFactory(new WrapFactory() {
 			public Scriptable wrapAsJavaObject(Context cx, Scriptable scope, Object javaObject, Class staticType) {
 				final Scriptable wrapped = super.wrapAsJavaObject(cx, scope, javaObject, staticType);
 				if (wrapped instanceof NativeJavaObject) {
-
 					//attach the mind-leech!
 					wrapped.setPrototype(new ExpandoJavaObjects());
 				}
 				return wrapped;
 			}
 		});
-		return cx.initStandardObjects();
+
+		
+		return context.initStandardObjects();
 	}
-
-	private NativeJavaObject njo(Scriptable start) {
-		if (start instanceof NativeJavaObject) {
-			return (NativeJavaObject) start;
-		} else {
-			throw new IllegalArgumentException("Hey you, expando java objects weren't meant to operate on non java objects");
-		}
-	}
-
-
 }
