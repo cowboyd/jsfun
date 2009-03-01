@@ -1,18 +1,31 @@
 package jsfun.examples;
 
 import jsfun.utils.JSEnvironment;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.NativeJavaObject;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.WrapFactory;
+import jsfun.utils.EnvDescription;
+import jsfun.utils.Prompt;
+import org.mozilla.javascript.*;
 
 import java.util.HashMap;
 
- public class ExpandoJavaObjects implements Scriptable {
+@EnvDescription(
+	"By default, the rhino projection of java objects into the javascript univers 'NativeJavaObject'\n" +
+		"does not include the ability to add and remove properties dynamically. Sadly, they are as\n" +
+		"static as the java objects themselves.\n\n" +
+		"This environment enhances this implementation by using a special prototype that stores extra\n" +
+		"properties for you:\n\n" + ExpandoJavaObjects.INITIAL_JS
+
+)
+@Prompt("expando>")
+public class ExpandoJavaObjects implements Scriptable, JSEnvironment {
 
 
 	private HashMap<Object, Object> properties = new HashMap<Object, Object>();
 	private Scriptable scope;
+	public static final String INITIAL_JS =
+		"function taint(object) {\n" +
+		"\tobject.tainted = true;\n" +
+		"\treturn object;\n" +
+		"}";
 
 	@Override
 	public String getClassName() {
@@ -121,8 +134,8 @@ import java.util.HashMap;
 				return wrapped;
 			}
 		});
-
-		
-		return context.initStandardObjects();
+		final ScriptableObject scope = context.initStandardObjects();
+		context.evaluateString(scope, INITIAL_JS, "<init>", 1, null);
+		return scope;
 	}
 }

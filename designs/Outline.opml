@@ -12,8 +12,8 @@
         <outline text="twitter - @cowboyd (all I do is complain!)"/>
         <outline text="podcast: drunk and retired"/>
         <outline text="poken: cowboyd"/>
-        <outline text="www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt;—blog www.thefrontside.net &lt;http://www.thefrontside.net/&gt;—blog www.thefrontside.net—blog &lt;http://www.thefrontside.net/blog&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt;"/>
-        <outline text="www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt;"/>
+        <outline text="www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt;—blog www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt;—blog www.thefrontside.net &lt;http://www.thefrontside.net/&gt;—blog www.thefrontside.net—blog &lt;http://www.thefrontside.net/blog&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt; www.thefrontside.net &lt;http://www.thefrontside.net/&gt;"/>
+        <outline text="www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt; www.cogentdude.com &lt;http://www.cogentdude.com/&gt;"/>
         <outline text="Why should you listen to me?"/>
       </outline>
       <outline text="What is embedding?">
@@ -72,7 +72,7 @@
         <outline text="Conclusion: Youre the man now dog!"/>
       </outline>
       <outline text="So why is Javascript a good choice for embedding?">
-        <outline text="www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt; www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt; "/>
+        <outline text="www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt; www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt; www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt; www.realultimatepower.net &lt;http://www.realultimatepower.net/&gt; "/>
         <outline text="Runtime supports most modern language features"/>
         <outline text="Almost all programming models, can be mapped to it, because it's so dead simple">
           <outline text="pics: the different meta-models."/>
@@ -156,7 +156,7 @@
                 <outline text="shell example: change prototype from Swords -&gt; Plowshares"/>
               </outline>
               <outline text="from the embedder's perspective, prototype is a bit of a misnomer">
-                <outline text="from the standard host environment, prototype is a appropriate"/>
+                <outline text="from the standard host environment, prototype is appropriate"/>
                 <outline text="for the embedder, it doesn't quite capture it."/>
                 <outline text="conceptually, &quot;object controller&quot; is more in line with what it does"/>
               </outline>
