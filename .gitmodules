@@ -1,0 +1,3 @@
+[submodule "jsonpp"]
+	path = jsonpp
+	url = git@github.com:cowboyd/jsonpp.git

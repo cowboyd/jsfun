@@ -5,5 +5,5 @@ import org.mozilla.javascript.Scriptable;
 
 public interface JSEnvironment {
 
-	Scriptable createScope(Context cx);
+	Scriptable createScope(Context cx) throws Exception;
 }

@@ -76,7 +76,15 @@ public class Shell implements SignalHandler {
 		return (Integer) new ContextFactory().call(new ContextAction() {
 			public Object run(Context cx) {
 				Shell.this.cx = cx;
-				Scriptable scope = Shell.this.scope = env.createScope(cx);
+				Scriptable scope = null;
+				try {
+					scope = Shell.this.scope = env.createScope(cx);
+
+				} catch(RuntimeException e) {
+					throw e;
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 				ScriptableObject.putProperty(scope, "$proto", new GetOrSetPrototype());
 				if (!quitOnInterrupt()) {
 					Quit quit = new Quit();
