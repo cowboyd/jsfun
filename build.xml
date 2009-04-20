@@ -8,6 +8,12 @@
 
 	<property name="rhino.jar" value="${lib.dir}/rhino-1.7R1.jar"/>
 	<property name="jline.jar" value="${lib.dir}/jline-0.9.94.jar"/>
+	<property name="twitter4j.jar" value="${lib.dir}/twitter4j-1.1.8.jar"/>
+	<property name="jsonpp.jar" value="${basedir}/jsonpp/build/classes"/>
+
+	<path id="classpath" path="${rhino.jar}:${jline.jar}:${twitter4j.jar}:${jsonpp.jar}">
+		<fileset dir="${lib.dir}" includes="jetty/*.jar"/>
+	</path>
 
 
 	<target name="init">
@@ -17,12 +23,29 @@
 
 	<target name="clean">
 		<delete dir="${build.dir}"/>
+		<exec executable="ant" dir="jsonpp">
+			<arg  line="compile"/>
+		</exec>
 	</target>
 
-	<target name="compile" depends="init">
-		<javac classpath="${rhino.jar}:${jline.jar}" srcdir="${src.dir}" destdir="${class.dir}" debug="true" debuglevel="lines,vars,source"/>
+	<target name="jsonpp">
+		<exec executable="ant" dir="jsonpp">
+			<arg line="compile"/>
+		</exec>
+	</target>
+
+	<target name="compile" depends="init,jsonpp">
+		<javac srcdir="${src.dir}" destdir="${class.dir}" debug="true" debuglevel="lines,vars,source">
+			<classpath refid="classpath"/>
+		</javac>
 		<copy todir="${class.dir}">
 			<fileset dir="${src.dir}" includes="**/*.js" excludes="*.java"/>
 		</copy>
+	</target>
+
+	<target  name="server" depends="compile">
+		<java fork="true" classpath="${class.dir}" classname="jsfun.examples.twitter.server.Main">
+			<classpath  refid="classpath"/>
+		</java>
 	</target>
 </project>
