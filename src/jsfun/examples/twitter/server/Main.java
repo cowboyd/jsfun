@@ -10,7 +10,7 @@ public class Main {
 		public static void main(String[] args) throws Exception {
 		Server server = new Server(8080);
 		Context root = new Context(server, "/", Context.SESSIONS);
-		root.setResourceBase(".");
+		root.setResourceBase("./web");
 		root.addServlet(new ServletHolder(new JspServlet()), "*.jsp");
 		root.addServlet(new ServletHolder(new TwitterScriptServlet()), "/api");
 		server.start();
