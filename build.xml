@@ -6,7 +6,7 @@
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="class.dir" value="${build.dir}/classes"/>
 
-	<property name="rhino.jar" value="${lib.dir}/rhino-1.7R1.jar"/>
+	<property name="rhino.jar" value="${lib.dir}/rhino-1.7R3pre.jar"/>
 	<property name="jline.jar" value="${lib.dir}/jline-0.9.94.jar"/>
 	<property name="twitter4j.jar" value="${lib.dir}/twitter4j-1.1.8.jar"/>
 	<property name="jsonpp.jar" value="${basedir}/jsonpp/build/classes"/>
