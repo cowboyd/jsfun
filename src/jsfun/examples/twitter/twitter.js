@@ -27,8 +27,7 @@
 			screenName: string(user.screenName),
 			description: string(user.description),
 			followersCount: user.followersCount,
-			location: string(user.location),
-			statusText: string(user.statusText)
+			location: string(user.location)			
 		}
 	}
 

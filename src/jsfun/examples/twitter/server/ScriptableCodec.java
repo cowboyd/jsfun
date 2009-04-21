@@ -9,6 +9,7 @@ import org.mozilla.javascript.IdFunctionObject;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Collection;
 
 
 public class ScriptableCodec implements Codec {
@@ -68,7 +69,9 @@ public class ScriptableCodec implements Codec {
 		};
 	}
 
-
+	public <K,V> Iterator<Map.Entry<K,V>> entries(Map<K,V> m) {
+		return m.entrySet().iterator();
+	}
 
 	@Override
 	public Iterator iterator(Object o) {
@@ -93,6 +96,10 @@ public class ScriptableCodec implements Codec {
 				throw new UnsupportedOperationException();
 			}
 		};
+	}
+
+	public Iterator iterator(Collection c) {
+		return c.iterator();
 	}
 
 	private static class Entry implements Map.Entry {
