@@ -65,6 +65,7 @@ public class ApiImpl implements Api {
 	}
 
 	public List<Status> getUserTimeline(String id) throws TwitterException {
+		System.out.println("ApiImpl.getUserTimeline(" + id + ")");
 		return api.getUserTimeline(id);
 	}
 

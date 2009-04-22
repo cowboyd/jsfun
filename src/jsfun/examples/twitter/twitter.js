@@ -79,7 +79,7 @@
 //		out.println('' + str)
 //	}
 
-	return {
+	var PublicInterface = {
 		login: function(username, password) {
 			apicall('login', [username, password])
 		},
@@ -111,12 +111,167 @@
 				var els = query.geocode.toString().split(/,/)
 				if (!els[1]) {
 					els[1] = els[2] = null
-				} else if (!el[2]) {
+				} else if (!els[2]) {
 					els[2] = null
 				}
-				q.setGeocode(els[0], els[1], els[2])
+				q.setGeoCode(els[0], els[1], els[2])
 			}
 			return apicall('search', [q], QueryResult)
+		},
+		help: function(fun) {
+			if (fun == PublicInterface.login) {
+				return {
+					"login(String username, String password)": {
+						description: "Sets the authentication credentials which will be used for subsequent requests.",
+						parameters: {
+							username: 'the twitter username',
+							password: 'the password for the account with username'
+						}
+					},
+					returns: "void"
+				}
+			}
+			if (fun == PublicInterface.friends) {
+				return {
+					"friends()": {
+						description: "Returns the friends of the currently authenticated user.",
+						parameters: {}
+					},
+					"friends(int page)": {
+						description: "Returns the specified user's friends, each with current status inline.",
+						parameters: {
+							page: "the page number to return"
+						}
+					},
+					"friends(String id)": {
+						description: "Returns the user's friends, each with current status inline.",
+						parameters: {
+							id: "the ID or screen name of the user for whom to request a list of friends"
+						}
+					},
+					"friends(String id, int page)": {
+						description: "Returns the user's friends, each with current status inline.",
+						parameters: {
+							id: "the ID or screen name of the user for whom to request a list of friends",
+							page: "the page number to return"
+						}
+					},
+					returns: "list of users"
+				}
+			}
+			if (fun == PublicInterface.followers) {
+				return {
+					"followers()": {
+						description: "Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter"
+					},
+					"followers(int page)": {
+						description: "Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter",
+						parameters: {
+							page: "Retrieves the next 100 followers."
+						}
+					},
+					"followers(String id)": {
+						description: "Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter",
+						parameters: {
+							id: "The ID or screen name of the user for whom to request a list of followers."
+						}
+					},
+					"followers(String id, int page)": {
+						description: "Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter",
+						parameters: {
+							id: "The ID or screen name of the user for whom to request a list of followers.",
+							page: "Retrieves the next 100 followers."
+						}
+					},
+					returns: "list of users"
+				}
+			}
+			if (fun == PublicInterface.timeline) {
+				return {
+					"timeline()": {
+						description: "Returns up to 20 statuses posted in the last 24 hours from the authenticating user and that user's friends.",
+						parameters: {}
+					},
+					"timeline(int page)": {
+						description: "Returns up to 20 most statuses posted from the authenticating user.",
+						parameters: {
+							id: "page number to return"
+						}
+					},
+					"timeline(int sinceId, int page)": {
+						description: "Returns up to 20 most recent statuses greater than sincId from the authenticating user",
+						parameters: {
+							sinceId: "Returns only statuses with an ID greater than (that is, more recent than) the specified ID",
+							page: "page number to return"
+						}
+					},
+					"timeline(String id)": {
+						description: "Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.",
+						parameters: {
+							id: "the ID or screen name of the user's timeline"
+						}
+					},
+					"timeline(String id, int page)": {
+						description: "Returns up to 20 from the specified userid.",
+						parameters: {
+							id: "the ID or screen name of the user's timeline",
+							page: "page number to return"
+						}
+					},
+					"timeline(int sinceId, String id, int page)": {
+						description: "Returns a page of 20 statuses greater than sinceId from the given user",
+						parameters: {
+							sinceId: "Returns only statuses with an ID greater than (that is, more recent than) the specified ID",
+							id: "the ID or screen name of the user's timeline",
+							page: "page number to return"
+						}
+					},
+					returns: "list of users"
+				}
+			}
+			if (fun == PublicInterface.search) {
+				return {
+					"search(String query)": {
+						description: "perform a string search for tweets",
+						parameters: {
+							query: "the search terms"
+						}
+					},
+					"search(options)": {
+						description: "perform a search with specific options",
+						options: {
+							query: "the search terms",
+							page: "page number to fetch",
+							rpp: "number of tweets to return per page (max 100)",
+							sinceId: "do not return tweets with id less than sinceId (more recent)"
+						}
+					},
+					returns: {
+						completedIn: "time for query completion",
+						maxId: "id of the most recent tweet",
+						page: "the page number of this result set",
+						warning: "a warning about the search",
+						tweets: "a list of tweets"
+					}
+				}
+			}
+			if (fun == PublicInterface.help) {
+				return {
+					"help()": "get a list of all the commands",
+					"help(fn)": "get help about a particular function"
+				}
+			}
+			return {
+				login: "authenticate as a user. not required for searching",
+				friends: "fetch friends, or friends of friends",
+				followers: "list of followers, or followers of friends",
+				timeline: "get the tweets from the authenticated user or authenticated user's friends",
+				search: "search twitter statuses for keywords, language, geocode and much more",
+				help: "get more detailed help about a function"
+			}
+
 		}
 	}
+
+	return PublicInterface
 })())

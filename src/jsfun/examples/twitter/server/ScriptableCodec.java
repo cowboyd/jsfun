@@ -2,10 +2,7 @@ package jsfun.examples.twitter.server;
 
 import jsonpp.Codec;
 import jsonpp.encode.Null;
-import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.IdFunctionObject;
+import org.mozilla.javascript.*;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -29,6 +26,10 @@ public class ScriptableCodec implements Codec {
 		return value.toString();
 	}
 
+	public String encodeValue(BaseFunction f) {
+		return String.format("function() {\n   [native code, arity=%d]\n}", f.getArity());
+	}
+
 	public String encodeValue(IdFunctionObject o) {
 		return String.format("function %s() { [native code for %s, arity=%d] }", o.getFunctionName(), o.getFunctionName(), o.getArity());
 	}
@@ -48,6 +49,10 @@ public class ScriptableCodec implements Codec {
 	}
 
 	public Iterator<Map.Entry> entries(NativeArray array) {
+		return null;
+	}
+
+	public Iterator<Map.Entry> entries(BaseFunction f) {
 		return null;
 	}
 

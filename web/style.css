@@ -7,9 +7,10 @@ html, body {
 
 #stdout {
 	float: left;
-	border-right: 1px solid black;
+	border-left: 1px solid black;
 	overflow-y: scroll;
-	width: 35%;
+	width: 64%;
+	height: 100%;
 }
 
 #controls {
@@ -17,10 +18,22 @@ html, body {
 	margin: 0;
 	margin-top: 1em;
 	margin-left: 1em;
-	height: 50%;
+	height: 75%;
 	width: 35%;
 }
 
 #controls textarea {
-	width: 100%;
+	margin: 0;
+	width: 98%;
+}
+
+#buttons {
+	margin-bottom: 10px;
+}
+
+#throb {
+	height: 1.5em;
+}
+.invisible {
+	visibility: hidden;
 }
