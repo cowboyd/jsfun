@@ -59,7 +59,7 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 
 	@Override
 	public Object run(Context cx) {
-		ScriptableObject scope = null;
+		ScriptableObject scope;
 		try {
 			scope = (ScriptableObject) new Twitter().createScope(cx);
 		} catch (Exception e) {
@@ -97,9 +97,9 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 
 		@Override
 		protected void onContextCreated(Context cx) {
-			cx.setInstructionObserverThreshold(100000);
+			cx.setInstructionObserverThreshold(100 * 1000);
 			Twitter.setupContext(cx);
-			super.onContextCreated(cx);	//To change body of overridden methods use File | Settings | File Templates.
+			super.onContextCreated(cx);
 		}
 
 		@Override
@@ -170,8 +170,7 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 		});
 		String[] elements = raw.split("\n");
 		ArrayList list = new ArrayList(elements.length);
-		for (int i = 0; i < elements.length; i++) {
-			String element = elements[i];
+		for (String element : elements) {
 			if (element.length() > 0) {
 				list.add(element.replaceAll("^\\s+at ", ""));
 			}
