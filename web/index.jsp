@@ -11,7 +11,9 @@
 <body>
 <div id="controls">
     <textarea id="script" rows="15">
-help()
+//uncomment one of the following to get started
+//help()
+//help(search) //can be used with any function
     </textarea>
     <div id="buttons">
         <img class="invisible" id="throb" src="pub/throb.gif" alt="throbber"/>

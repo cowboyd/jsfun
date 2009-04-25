@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.*;
 
 import jsonpp.JSONPP;
 import jsonpp.layout.Layout;
@@ -61,20 +59,37 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 
 	@Override
 	public Object run(Context cx) {
+		ScriptableObject scope = null;
 		try {
-			ScriptableObject scope = (ScriptableObject) new Twitter().createScope(cx);
-			scope.sealObject();
-			for (int i = 0; i < scope.getIds().length; i++) {
-				Object key = scope.getIds()[i];
-				if (key instanceof String) {
-					String name = (String) key;
-					ScriptableObject member = (ScriptableObject) scope.get(name, scope);
-					member.sealObject();
-				}
-			}
-			return scope;
+			scope = (ScriptableObject) new Twitter().createScope(cx);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+		deepSeal(scope);
+		return scope;
+	}
+
+	private void deepSeal(ScriptableObject o) {
+		deepSeal(o, new HashSet<ScriptableObject>());
+	}
+
+	private void deepSeal(ScriptableObject o, Set<ScriptableObject> seen) {
+		if (seen.contains(o)) return;
+		seen.add(o);
+		o.sealObject();
+		for (int i = 0; i < o.getAllIds().length; i++) {
+			Object id = o.getAllIds()[i];
+			Object value;
+			if (id instanceof String) {
+				String name = (String) id;
+				value = o.get(name, o);
+			} else {
+				Integer idx = (Integer) id;
+				value = o.get(idx, o);
+			}
+			if (value instanceof ScriptableObject) {
+				deepSeal((ScriptableObject) value, seen);
+			}
 		}
 	}
 
