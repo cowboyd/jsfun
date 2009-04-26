@@ -50,7 +50,7 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 			jsonpp.pp(error("Script exceeded the maximum allotment of instructions", response));
 		} catch (Throwable t) {
 			if (t instanceof Error) {
-				throw (Error)t;
+				throw (Error) t;
 			} else {
 				throw new Error(t);
 			}
@@ -103,17 +103,12 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 
 		@Override
 		protected void onContextCreated(Context cx) {
-			System.out.println("context created");
-			try {
-				cx.setInstructionObserverThreshold(100 * 1000);
-				Api api = Twitter.setupContext(cx);
-				String username = request.getParameter("u");
-				String password = request.getParameter("p");
-				api.login(username, password);
-				super.onContextCreated(cx);
-			} catch (Exception e) {
-				e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-			}
+			cx.setInstructionObserverThreshold(100 * 1000);
+			Api api = Twitter.setupContext(cx);
+			String username = request.getParameter("u");
+			String password = request.getParameter("p");
+			api.login(username, password);
+			super.onContextCreated(cx);
 		}
 
 		@Override
@@ -189,5 +184,5 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 			}
 		}
 		return list;
-	}	
+	}
 }

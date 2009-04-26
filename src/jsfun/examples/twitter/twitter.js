@@ -9,12 +9,6 @@
 		return "" + s
 	}
 
-	function merge(object, properties) {
-		for (var name in properties) {
-			object[name] = properties[name]
-		}
-	}
-
 	function List(transform) {
 		return function(list) {
 			var mapped = []
@@ -32,15 +26,12 @@
 			name: string(user.name),
 			screenName: string(user.screenName),
 			description: string(user.description),
+			url: string(user.getURL()),
 			followersCount: user.followersCount,
-			location: string(user.location)			
+			location: string(user.location),
+			statusText: string(user.statusText),
+			statusSource: string(user.statusSource)
 		}
-	}
-
-	function UserWithStatus(user) {
-		return merge(User(user), {
-
-		})
 	}
 
 	function Status(status) {
@@ -253,6 +244,7 @@
 						description: "perform a search with specific options",
 						options: {
 							query: "the search terms",
+							lang: "return results only with this two letter ISO Language Code",
 							page: "page number to fetch",
 							rpp: "number of tweets to return per page (max 100)",
 							sinceId: "do not return tweets with id less than sinceId (more recent)"

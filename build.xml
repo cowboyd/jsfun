@@ -8,7 +8,7 @@
 
 	<property name="rhino.jar" value="${lib.dir}/rhino-1.7R3pre.jar"/>
 	<property name="jline.jar" value="${lib.dir}/jline-0.9.94.jar"/>
-	<property name="twitter4j.jar" value="${lib.dir}/twitter4j-1.1.8.jar"/>
+	<property name="twitter4j.jar" value="${lib.dir}/twitter4j-2.0.0.jar"/>
 	<property name="jsonpp.jar" value="${basedir}/jsonpp/build/classes"/>
 
 	<path id="classpath" path="${rhino.jar}:${jline.jar}:${twitter4j.jar}:${jsonpp.jar}">

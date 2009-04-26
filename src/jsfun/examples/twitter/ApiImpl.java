@@ -48,47 +48,6 @@ public class ApiImpl implements Api {
 		return api.getFriendsTimeline(id, sinceId);
 	}
 
-	public List<Status> getUserTimeline(String id, int count, long sinceId) throws TwitterException {
-		return api.getUserTimeline(id, count, sinceId);
-	}
-
-	public List<Status> getUserTimeline(String id, Date since) throws TwitterException {
-		return api.getUserTimeline(id, since);
-	}
-
-	public List<Status> getUserTimeline(String id, int count) throws TwitterException {
-		return api.getUserTimeline(id, count);
-	}
-
-	public List<Status> getUserTimeline(int count, Date since) throws TwitterException {
-		return api.getUserTimeline(count, since);
-	}
-
-	public List<Status> getUserTimeline(String id) throws TwitterException {
-		System.out.println("ApiImpl.getUserTimeline(" + id + ")");
-		return api.getUserTimeline(id);
-	}
-
-	public List<Status> getUserTimeline() throws TwitterException {
-		return api.getUserTimeline();
-	}
-
-	public List<Status> getReplies() throws TwitterException {
-		return api.getReplies();
-	}
-
-	public List<Status> getReplies(long sinceId) throws TwitterException {
-		return api.getReplies(sinceId);
-	}
-
-	public List<Status> getReplies(int page) throws TwitterException {
-		return api.getReplies(page);
-	}
-
-	public List<Status> getReplies(long sinceId, int page) throws TwitterException {
-		return api.getReplies(sinceId, page);
-	}
-
 	public List<User> getFriends() throws TwitterException {
 		return api.getFriends();
 	}
@@ -121,9 +80,7 @@ public class ApiImpl implements Api {
 		return api.getFollowers(id, page);
 	}
 
-	@Override
 	public QueryResult search(Query query) throws TwitterException {
-		System.out.println("query = " + query);
 		return api.search(query);
 	}
 }
