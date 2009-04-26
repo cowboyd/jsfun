@@ -28,8 +28,10 @@ public class Twitter implements JSEnvironment, ClassShutter {
 		return scope;
 	}
 
-	public static void setupContext(Context cx) {
-		cx.putThreadLocal("TWITTER_API", newApiImpl());
+	public static Api setupContext(Context cx) {
+		Api api = newApiImpl();
+		cx.putThreadLocal("TWITTER_API", api);
+		return api;
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class Twitter implements JSEnvironment, ClassShutter {
 
 	}
 
-	private static Object newApiImpl() {
-		return Proxy.newProxyInstance(Twitter.class.getClassLoader(), new Class[] {Api.class}, new ApiInvoker());
+	private static Api newApiImpl() {
+		return (Api) Proxy.newProxyInstance(Twitter.class.getClassLoader(), new Class[] {Api.class}, new ApiInvoker());
 	}
 }

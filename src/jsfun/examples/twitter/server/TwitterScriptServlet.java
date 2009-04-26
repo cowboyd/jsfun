@@ -2,6 +2,7 @@ package jsfun.examples.twitter.server;
 
 
 import jsfun.examples.twitter.Twitter;
+import jsfun.examples.twitter.Api;
 import org.mozilla.javascript.*;
 
 import javax.servlet.ServletException;
@@ -29,7 +30,7 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 		Object result;
 		try {
 			try {
-				result = new ServletContextFactory().call(new RunScript(request.getInputStream(), this.scope));
+				result = new ServletContextFactory(request).call(new RunScript(new StringReader(request.getParameter("script")), this.scope));
 				response.setStatus(HttpServletResponse.SC_OK);
 				if (result instanceof Undefined) {
 					result = "undefined";
@@ -94,17 +95,29 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 	}
 
 	public static class ServletContextFactory extends ContextFactory {
+		private HttpServletRequest request;
+
+		public ServletContextFactory(HttpServletRequest request) {
+			this.request = request;
+		}
 
 		@Override
 		protected void onContextCreated(Context cx) {
-			cx.setInstructionObserverThreshold(100 * 1000);
-			Twitter.setupContext(cx);
-			super.onContextCreated(cx);
+			System.out.println("context created");
+			try {
+				cx.setInstructionObserverThreshold(100 * 1000);
+				Api api = Twitter.setupContext(cx);
+				String username = request.getParameter("u");
+				String password = request.getParameter("p");
+				api.login(username, password);
+				super.onContextCreated(cx);
+			} catch (Exception e) {
+				e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+			}
 		}
 
 		@Override
 		protected void observeInstructionCount(Context cx, int instructionCount) {
-
 			throw new LongRunningScriptError();
 		}
 
@@ -115,9 +128,9 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 
 		private Scriptable scope;
 
-		private InputStream input;
+		private Reader input;
 
-		public RunScript(InputStream input, Scriptable scope) {
+		public RunScript(Reader input, Scriptable scope) {
 			this.input = input;
 			this.scope = scope;
 		}
@@ -127,7 +140,7 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 			try {
 				NativeObject o = new NativeObject();
 				o.setParentScope(scope);
-				return cx.evaluateReader(o, new InputStreamReader(input), "script", 1, null);
+				return cx.evaluateReader(o, input, "script", 1, null);
 			} catch (Exception e) {
 				throw new ExceptionWrapper(e);
 			}

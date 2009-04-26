@@ -9,6 +9,12 @@
 		return "" + s
 	}
 
+	function merge(object, properties) {
+		for (var name in properties) {
+			object[name] = properties[name]
+		}
+	}
+
 	function List(transform) {
 		return function(list) {
 			var mapped = []
@@ -29,6 +35,12 @@
 			followersCount: user.followersCount,
 			location: string(user.location)			
 		}
+	}
+
+	function UserWithStatus(user) {
+		return merge(User(user), {
+
+		})
 	}
 
 	function Status(status) {

@@ -37,3 +37,11 @@ html, body {
 .invisible {
 	visibility: hidden;
 }
+
+.error {
+	background: url(error_bg.png) repeat-x;
+}
+
+.ok {
+	background: url(ok_bg.png) repeat-x;
+}
