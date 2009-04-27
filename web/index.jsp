@@ -239,9 +239,13 @@ result;
                     stdout.removeClass('error').addClass('ok')
                     append(data)
                 },
-                error: function(xhr, status) {
-                    stdout.addClass('error').removeClass('ok')
-                    append(xhr.responseText)
+                error: function(xhr, status, errorThrown) {
+                    if (xhr.status == 0) {
+                        alert('unable to connect to server')
+                    } else {
+                        stdout.addClass('error').removeClass('ok')
+                        append(xhr.responseText)
+                    }
                 },
                 complete: function() {
                     throb.toggleClass('invisible', true)
