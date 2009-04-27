@@ -41,7 +41,7 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 			}
 
 		} catch (RhinoException e) {
-			Map m = error(e.getMessage(), response);
+			Map<String, Object> m = error(e.getMessage(), response);
 			m.put("stack", getScriptTrace(e));
 			jsonpp.pp(m);
 		} catch (Exception e) {
@@ -162,14 +162,14 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 		}
 	}
 
-	private Map error(String message, HttpServletResponse response) {
+	private Map<String, Object> error(String message, HttpServletResponse response) {
 		response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("error", message);
 		return map;
 	}
 
-	private ArrayList getScriptTrace(RhinoException e) {
+	private ArrayList<String> getScriptTrace(RhinoException e) {
 		String raw = e.getScriptStackTrace(new FilenameFilter() {
 			@Override
 			public boolean accept(File file, String s) {
@@ -177,7 +177,7 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 			}
 		});
 		String[] elements = raw.split("\n");
-		ArrayList list = new ArrayList(elements.length);
+		ArrayList<String> list = new ArrayList<String>(elements.length);
 		for (String element : elements) {
 			if (element.length() > 0) {
 				list.add(element.replaceAll("^\\s+at ", ""));
