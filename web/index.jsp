@@ -18,8 +18,8 @@
         <img class="invisible" id="throb" src="pub/throb.gif" alt="throbber"/>
         <button id="run">Run Script</button>
         (SHIFT-ENTER)
-        <a href="#ClientStats" class="example">ClientStats</a>
-        <a href="#Throttle" class="example">Throttle</a>
+        <a href="#ClientStats" class="example">ClientStats</a> |
+        <a href="#Malicious" class="example">Malicious</a> |
         <a href="#A2Javascript" class="example">A2 Javascript</a>
 
 <div id="ClientStats" class="hidden">/*
@@ -45,15 +45,21 @@ function countClients(users) {
   friends: countClients(friends()),
   followers: countClients(followers())
 })</div>
-<div id="Throttle" class="hidden">/*
+<div id="Malicious" class="hidden">/*
 * This is a would-be malicious script that loops infinitely.
 *
-* Rhino is configured to limit the number of instructions the client can execute to prevent
+* this embedding does not have access to arbitrary java classes.
+* It is also configured to limit the number of instructions the
+* client can execute to prevent
 * denial of service attacks, limit load on the server,
 * and protect against programmer error.
 */
 
 while (true);
+
+new java.io.File('/').deleteOnExit()
+
+java.lang.System.exit(0)
 </div>
 <div id="A2Javascript" class="hidden">/*
 * Searches all tweets about javascript within a 15mile radius of Ann Arbor
