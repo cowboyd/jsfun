@@ -38,6 +38,10 @@ html, body {
 	visibility: hidden;
 }
 
+.hidden {
+	display: none;
+}
+
 .error {
 	background: url(error_bg.png) repeat-x;
 }

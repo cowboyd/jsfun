@@ -9,6 +9,13 @@
 		return "" + s
 	}
 
+	function merge(object, properties) {
+		for (var name in properties) {
+			object[name] = properties[name]
+		}
+		return object
+	}
+
 	function List(transform) {
 		return function(list) {
 			var mapped = []
@@ -32,6 +39,16 @@
 			statusText: string(user.statusText),
 			statusSource: string(user.statusSource)
 		}
+	}
+
+	function UserDetail(user) {
+		return merge(User(user), {
+			createdAt: string(user.createdAt.toString()),
+			friendsCount: user.friendsCount,
+			statusesCount: user.statusesCount,
+			favouritesCount: user.favouritesCount,
+			following: user.following
+		})
 	}
 
 	function Status(status) {
@@ -86,6 +103,9 @@
 		login: function(username, password) {
 			apicall('login', [username, password])
 		},
+		user: function() {
+			return apicall('getUserDetail', arguments, UserDetail)	
+		},
 		friends: function() {
 			return apicall('getFriends', arguments, List(User))
 		},
@@ -134,6 +154,16 @@
 					returns: "void"
 				}
 			}
+			if (fun == PublicInterface.user) {
+				return {
+					"user(String username)": {
+						description: "fetches detailed information about a user",
+						parameters: {
+							username: "the user id to fetch"
+						}
+					}
+				}
+			}
 			if (fun == PublicInterface.friends) {
 				return {
 					"friends()": {
@@ -165,22 +195,22 @@
 			if (fun == PublicInterface.followers) {
 				return {
 					"followers()": {
-						description: "Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter"
+						description: "Returns the authenticating user's followers, each with current status inline."
 					},
 					"followers(int page)": {
-						description: "Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter",
+						description: "Returns the authenticating user's followers, each with current status inline.",
 						parameters: {
 							page: "Retrieves the next 100 followers."
 						}
 					},
 					"followers(String id)": {
-						description: "Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter",
+						description: "Returns the specified user's followers, each with current status inline.",
 						parameters: {
 							id: "The ID or screen name of the user for whom to request a list of followers."
 						}
 					},
 					"followers(String id, int page)": {
-						description: "Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter",
+						description: "Returns the specified user's followers, each with current status inline.",
 						parameters: {
 							id: "The ID or screen name of the user for whom to request a list of followers.",
 							page: "Retrieves the next 100 followers."
@@ -192,7 +222,7 @@
 			if (fun == PublicInterface.timeline) {
 				return {
 					"timeline()": {
-						description: "Returns up to 20 statuses posted in the last 24 hours from the authenticating user and that user's friends.",
+						description: "Returns up to 20 statuses from the authenticating user and that user's friends.",
 						parameters: {}
 					},
 					"timeline(int page)": {
@@ -202,14 +232,14 @@
 						}
 					},
 					"timeline(int sinceId, int page)": {
-						description: "Returns up to 20 most recent statuses greater than sincId from the authenticating user",
+						description: "Returns up to 20 statuses greater than sincId from the authenticating user",
 						parameters: {
-							sinceId: "Returns only statuses with an ID greater than (that is, more recent than) the specified ID",
+							sinceId: "Returns only statuses more recent than the specified ID",
 							page: "page number to return"
 						}
 					},
 					"timeline(String id)": {
-						description: "Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.",
+						description: "Returns up to 20 statuses from the specified userid and their friends.",
 						parameters: {
 							id: "the ID or screen name of the user's timeline"
 						}
@@ -224,7 +254,7 @@
 					"timeline(int sinceId, String id, int page)": {
 						description: "Returns a page of 20 statuses greater than sinceId from the given user",
 						parameters: {
-							sinceId: "Returns only statuses with an ID greater than (that is, more recent than) the specified ID",
+							sinceId: "Returns only statuses with an ID more recent than the specified ID",
 							id: "the ID or screen name of the user's timeline",
 							page: "page number to return"
 						}
@@ -266,7 +296,8 @@
 				}
 			}
 			return {
-				login: "authenticate as a user. not required for searching",
+				login: "authenticate as a user. not required for searching, fetching userinfo",
+				user: "fetch detailed information about a user",
 				friends: "fetch friends, or friends of friends",
 				followers: "list of followers, or followers of friends",
 				timeline: "get the tweets from the authenticated user or authenticated user's friends",

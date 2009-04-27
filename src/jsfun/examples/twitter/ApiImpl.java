@@ -16,6 +16,10 @@ public class ApiImpl implements Api {
 		api.setPassword(password);
 	}
 
+	public ExtendedUser getUserDetail(String id) throws TwitterException {
+		return api.getUserDetail(id);
+	}
+
 	public List<Status> getFriendsTimeline() throws TwitterException {
 		return api.getFriendsTimeline();
 	}

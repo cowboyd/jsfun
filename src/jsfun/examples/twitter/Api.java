@@ -10,6 +10,8 @@ public interface Api {
 
 	void login(String username, String password);
 
+	ExtendedUser getUserDetail(String id) throws TwitterException;
+
 	List<Status> getFriendsTimeline() throws TwitterException;
 
 	List<Status> getFriendsTimeline(int page) throws TwitterException;
