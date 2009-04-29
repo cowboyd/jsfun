@@ -104,6 +104,10 @@ public class TwitterScriptServlet extends HttpServlet implements ContextAction {
 		@Override
 		protected void onContextCreated(Context cx) {
 			cx.setInstructionObserverThreshold(100 * 1000);
+			Api api = Twitter.setupContext(cx);
+			String username = request.getParameter("u");
+			String password = request.getParameter("p");
+			api.login(username, password);
 			super.onContextCreated(cx);
 		}
 
